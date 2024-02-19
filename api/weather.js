@@ -7,7 +7,7 @@ const locationEndpoint = params => `https://api.weatherapi.com/v1/search.json?ke
 const apiCall = async (endpoint) => {
     const options = {
         method: 'GET',
-        url: 'endpoint'
+        url: endpoint
     }
     try {
         const response = await axios.request(options);

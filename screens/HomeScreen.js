@@ -6,20 +6,24 @@ import { CalendarDaysIcon, MagnifyingGlassIcon } from 'react-native-heroicons/ou
 import { StatusBar } from 'expo-status-bar';
 import {MapPinIcon} from 'react-native-heroicons/solid'
 import {debounce} from 'lodash'
+import { fetchLocations } from '../api/weather';
 
 function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
   const [locations, setLocations] = useState([1, 2, 3]);
-
-
   const handleLocation = (loc) => {
     console.log('location:' , loc);
   }
 
   const handleSearch = value =>{
-    console.log('value:', value)
+    //fetch locations
+    if(value.length>2) {
+      fetchLocations({cityName: value}).then(data=> {
+        console.log('got locatios:', data);
+      })
+    }
   }
-  const handleTextDebounce = useCallback(debounce(handleSearch, 1200), [])
+  const handleTextDebounce = useCallback(debounce(handleSearch, 1200), []);
   return (
     <View className='flex-1 relative'>
       <StatusBar style='light' />
