@@ -71,9 +71,9 @@ function HomeScreen() {
            </Text>
            </Text>
            {/*wether Image */}
-           <View className="flex-row justify-center">
+           <View className="flex-row justify-center ">
             <Image  source={require('../assets/images/sun.png')}
-            className='w-52 h-52 '>
+            className='w-52 h-52 rounded-2xl'>
             </Image> 
            </View>
            {/*Degree celcius */}
@@ -119,7 +119,7 @@ function HomeScreen() {
             horizontal contentContainerStyle={{paddingHorizontal:10}}
             showsHorizontalScrollIndicator={false}>
              <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
+              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3  bg-sky-300 mr-3'>
               <Image source={require('../assets/images/heavyrain.png')} 
               className='h-11 w-11' />
               <Text className='text-white'>Monday</Text>
