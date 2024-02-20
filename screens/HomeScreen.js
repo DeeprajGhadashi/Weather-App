@@ -17,15 +17,17 @@ function HomeScreen() {
   const [loading, setLoading] = useState(true);
 
   const handleLocation = (loc) => {
-    console.log('location:', loc);
+    //console.log('location:', loc);
     setLocations([]);
+    setLoading(true);
     toggleSearch(false);
     fetchWetherForecast({
       cityName: loc.name,
       days: '7'
     }).then(data => {
       setWeather(data);
-      console.log('got forcast:', data);
+      setLoading(false);
+     // console.log('got forcast:', data);
     })
   }
 
@@ -44,7 +46,7 @@ function HomeScreen() {
 
   const fetchMyWeatherData = async () => {
     fetchWetherForecast({
-      cityName: 'Tokyo',
+      cityName: 'Pune',
       days: '7'
     }).then(data => {
       setWeather(data);
