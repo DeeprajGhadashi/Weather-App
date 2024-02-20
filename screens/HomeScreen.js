@@ -149,55 +149,25 @@ function HomeScreen() {
             <ScrollView
             horizontal contentContainerStyle={{paddingHorizontal:10}}
             showsHorizontalScrollIndicator={false}>
-             <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3  bg-sky-300 mr-3'>
-              <Image source={require('../assets/images/heavyrain.png')} 
-              className='h-11 w-11' />
-              <Text className='text-white'>Monday</Text>
-              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
-             </View>
-             <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
-              <Image source={require('../assets/images/heavyrain.png')} 
-              className='h-11 w-11' />
-              <Text className='text-white'>Tuesday</Text>
-              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
-             </View>
-             <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
-              <Image source={require('../assets/images/heavyrain.png')} 
-              className='h-11 w-11' />
-              <Text className='text-white'>Wednesday</Text>
-              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
-             </View>
-             <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
-              <Image source={require('../assets/images/heavyrain.png')} 
-              className='h-11 w-11' />
-              <Text className='text-white'>Thursday</Text>
-              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
-             </View>
-             <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
-              <Image source={require('../assets/images/heavyrain.png')} 
-              className='h-11 w-11' />
-              <Text className='text-white'>Friday</Text>
-              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
-             </View>
-             <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
-              <Image source={require('../assets/images/heavyrain.png')} 
-              className='h-11 w-11' />
-              <Text className='text-white'>Saturday</Text>
-              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
-             </View>
-             <View
-              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
-              <Image source={require('../assets/images/heavyrain.png')} 
-              className='h-11 w-11' />
-              <Text className='text-white'>Sunday</Text>
-              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
-             </View>
+              {
+                weather?.forecast?.forecastday?.map((item, index)=>{
+                  let date = new Date(item.date);
+                  let options = {weekday: 'long'};
+                  let dayName = date.toLocaleDateString('en-US', options);
+                  dayName = dayName.split(',')[0]
+                  return(
+                    <View
+                    key={index}
+                    className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3  bg-sky-300 mr-3'>
+                    <Image source={weatherImages [current?.condition?.text]}
+                    //source={require('../assets/images/heavyrain.png')} 
+                    className='h-12 w-12 rounded-3xl' />
+                    <Text className='text-white'>{dayName}</Text>
+                    <Text className='text-white text-xl font-semibold'> {item?.day?.avgtemp_c}&#176;</Text>
+                   </View>
+                  )
+                })
+              }
             </ScrollView>
           </View>
         </View>
