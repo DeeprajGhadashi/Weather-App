@@ -6,24 +6,39 @@ import { CalendarDaysIcon, MagnifyingGlassIcon } from 'react-native-heroicons/ou
 import { StatusBar } from 'expo-status-bar';
 import {MapPinIcon} from 'react-native-heroicons/solid'
 import {debounce} from 'lodash'
-import { fetchLocations } from '../api/weather';
+import { fetchLocations, fetchWetherForecast } from '../api/weather';
+import { weatherImages } from '../constants';
 
 function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
-  const [locations, setLocations] = useState([1, 2, 3]);
-  const handleLocation = (loc) => {
-    console.log('location:' , loc);
+  const [locations, setLocations] = useState([]);
+  const [weather, setWeather ] = useState({})
+  
+  const handleLocation = (loc)=> {
+    console.log('location:',loc);
+    setLocations([]);
+    toggleSearch(false);
+    fetchWetherForecast({
+      cityName: loc.name,
+      days:'7'
+    }).then(data=> {
+      setWeather(data);
+      console.log('got forcast:' , data);
+    })
   }
 
   const handleSearch = value =>{
     //fetch locations
     if(value.length>2) {
       fetchLocations({cityName: value}).then(data=> {
-        console.log('got locatios:', data);
+        setLocations(data);
       })
     }
   }
   const handleTextDebounce = useCallback(debounce(handleSearch, 1200), []);
+
+  const {current , location } = weather;
+
   return (
     <View className='flex-1 relative'>
       <StatusBar style='light' />
@@ -61,12 +76,12 @@ function HomeScreen() {
                   let borderClass = showBorder ? 'border-b-2 border-b-gray-400' : ''
                   return (
                     <TouchableOpacity
-                      onPress={()=> handleLocation()}
+                      onPress={()=> handleLocation(loc)}
                       key={index}
                       className= {'flex-row items-center border-0 p-3 px-4 mb-1 ' +borderClass }>
                       {/* Display the location data */}
                       <MapPinIcon size='20' color='gray' />
-                      <Text className='text-black text-lg ml-2'>London, United Kingdom</Text>
+                      <Text className='text-black text-lg ml-2'>{loc?.name},{loc?.country}</Text>
                     </TouchableOpacity>
                   )
                 })}
@@ -78,40 +93,43 @@ function HomeScreen() {
         <View className='mx-4 flex justify-around flex-1 mb-2'>
            {/* Location */}
            <Text className='text-white text-center text-2xl font-bold'>
-            London,
+            {location?.name}, {''}
             <Text className='text-gray-300 text-lg font-bold'>
-            United Kingdom
+            {location?.country}
            </Text>
            </Text>
            {/*wether Image */}
            <View className="flex-row justify-center ">
-            <Image  source={require('../assets/images/sun.png')}
-            className='w-52 h-52 rounded-2xl'>
+            <Image 
+             source={weatherImages [current?.condition?.text]} 
+            // source={require('../assets/images/partlycloudy.png')}
+            className='w-52 h-52 rounded-xl'>
             </Image> 
            </View>
            {/*Degree celcius */}
            <View className='space-y-2'>
             <Text className='text-center font-bold text-black text-4xl ml-5'>
-             23&#176;
+             {current?.temp_c}&#176;
             </Text>
             <Text className='text-center text-black text-xl tracking-widest'>
-             partly cloudy
+            {current?.condition?.text}
             </Text>
            </View>
           {/*Other stats*/}
           <View className='flex-row justify-between w-full rounded-xl py-3 space-y-2 bg-gray-200'>
             <View className='flex-row space-x-2 items-center'>
-              <Image source={require('../assets/images/wind.png')} 
+              <Image 
+                source={require('../assets/images/wind.png')} 
               className='h-6 w-6 ml-1' />
               <Text className='text-black font-semibold text-base'>
-               22Km
+               {current?.wind_kph} kph
               </Text>
             </View>
             <View className='flex-row space-x-2 items-center'>
               <Image source={require('../assets/images/drop.png')} 
               className='h-6 w-6' />
               <Text className='text-black font-semibold text-base'>
-               23%
+              {current?.humidity}%
               </Text>
             </View>
             <View className='flex-row space-x-2 items-center'>
@@ -164,6 +182,20 @@ function HomeScreen() {
               <Image source={require('../assets/images/heavyrain.png')} 
               className='h-11 w-11' />
               <Text className='text-white'>Friday</Text>
+              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
+             </View>
+             <View
+              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
+              <Image source={require('../assets/images/heavyrain.png')} 
+              className='h-11 w-11' />
+              <Text className='text-white'>Saturday</Text>
+              <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
+             </View>
+             <View
+              className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3 bg-sky-300 mr-3'>
+              <Image source={require('../assets/images/heavyrain.png')} 
+              className='h-11 w-11' />
+              <Text className='text-white'>Sunday</Text>
               <Text className='text-white text-xl font-semibold'> 23&#176;</Text>
              </View>
             </ScrollView>
