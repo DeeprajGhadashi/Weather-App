@@ -1,5 +1,5 @@
 import { Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Image } from "react-native";
 import { theme, themes } from '../theme';
 import { CalendarDaysIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
@@ -35,6 +35,20 @@ function HomeScreen() {
       })
     }
   }
+
+  useEffect(()=>{
+    fetchMyWeatherData();
+  },[]);
+
+  const fetchMyWeatherData = async () =>{
+    fetchWetherForecast({
+     cityName: 'Tokyo',
+     days:'7'
+    }).then(data=>{
+      setWeather(data);
+    })
+  }
+
   const handleTextDebounce = useCallback(debounce(handleSearch, 1200), []);
 
   const {current , location } = weather;
