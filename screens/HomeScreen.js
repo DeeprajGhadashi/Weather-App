@@ -166,7 +166,7 @@ function HomeScreen() {
             <Image source={require('../assets/images/sunrise.png')}
               className='h-6 w-6 ' />
             <Text className='text-black font-semibold text-base mr-1'>
-              6:05 AM
+              {weather?.forecast?.forecastday[0]?.astro?.sunrise}
             </Text>
           </View>
         </View>
