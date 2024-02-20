@@ -6,9 +6,10 @@ import { CalendarDaysIcon, MagnifyingGlassIcon } from 'react-native-heroicons/ou
 import { StatusBar } from 'expo-status-bar';
 import { MapPinIcon } from 'react-native-heroicons/solid'
 import { debounce } from 'lodash'
-import { fetchLocations, fetchWetherForecast } from '../api/weather';
+import { fetchLocations, fetchWeatherForecast } from '../api/weather';
 import { weatherImages } from '../constants';
 import * as Progress from 'react-native-progress';
+import { getData, storeData } from '../utils/asyncStorage';
 
 function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
@@ -21,13 +22,14 @@ function HomeScreen() {
     setLocations([]);
     setLoading(true);
     toggleSearch(false);
-    fetchWetherForecast({
+    fetchWeatherForecast({
       cityName: loc.name,
       days: '7'
     }).then(data => {
       setWeather(data);
       setLoading(false);
-     // console.log('got forcast:', data);
+      storeData('city', loc.name);
+      //console.log('got forcast:', data);
     })
   }
 
@@ -45,8 +47,11 @@ function HomeScreen() {
   }, []);
 
   const fetchMyWeatherData = async () => {
-    fetchWetherForecast({
-      cityName: 'Pune',
+    let myCity = await getData('city');
+    let cityName = 'Ratnagiri';
+    if(myCity) cityName = myCity;
+    fetchWeatherForecast({
+      cityName,
       days: '7'
     }).then(data => {
       setWeather(data);

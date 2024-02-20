@@ -19,7 +19,7 @@ const apiCall = async (endpoint) => {
     }
 }
 
-export const fetchWetherForecast = params => {
+export const fetchWeatherForecast = params => {
     return apiCall(forecastEndpoint(params));
 }
 
