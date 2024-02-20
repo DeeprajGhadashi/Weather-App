@@ -65,7 +65,8 @@ function HomeScreen() {
         source={require('../assets/images/background.png')} />
       {
         loading ? (
-          <View className='flex-1 flex-row justify-center items-center'>
+          <View className='flex-1 justify-center items-center'>
+            <Progress.CircleSnail thickness={10} size={140} color='cyan' />
            <Text className='text-cyan text-4xl'>Loading...</Text>
           </View>
         ): (
