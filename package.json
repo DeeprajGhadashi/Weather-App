@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.19.3"
   },
-  "name": "Weather-App",
+  "name": "weather-app",
   "version": "1.0.0",
   "private": true,
   "scripts": {
