@@ -1,15 +1,13 @@
-import { Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import {View, Image , Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Image } from "react-native";
 import { theme } from '../theme';
-import { CalendarDaysIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
+import { CalendarDaysIcon, MagnifyingGlassIcon,MapPinIcon } from 'react-native-heroicons/outline';
 import { StatusBar } from 'expo-status-bar';
-import { MapPinIcon } from 'react-native-heroicons/solid'
 import { debounce } from 'lodash'
 import { fetchLocations, fetchWeatherForecast } from '../api/weather';
 import { weatherImages } from '../constants';
 import * as Progress from 'react-native-progress';
-import { getData, storeData } from '../utils/asyncStorage';
+import { getData, storeData } from '../utils/asyncStorage'; 
 
 function HomeScreen() {
   const [showSearch, toggleSearch] = useState(false);
@@ -24,7 +22,7 @@ function HomeScreen() {
     toggleSearch(false);
     fetchWeatherForecast({
       cityName: loc.name,
-      days: '7'
+      days: '7' // Limit forecast data to 7 days
     }).then(data => {
       setWeather(data);
       setLoading(false);
@@ -40,7 +38,7 @@ function HomeScreen() {
         setLocations(data);
       })
     }
-  };
+  }; 
 
   useEffect(() => {
     fetchMyWeatherData();
@@ -52,7 +50,7 @@ function HomeScreen() {
     if(myCity) cityName = myCity;
     fetchWeatherForecast({
       cityName,
-      days: '7'
+      days: '7' // Limit forecast data to 7 days
     }).then(data => {
       setWeather(data);
       setLoading(false); // loading complete then fatch data
@@ -71,8 +69,8 @@ function HomeScreen() {
       {
         loading ? (
           <View className='flex-1 justify-center items-center'>
-            <Progress.CircleSnail thickness={10} size={140} color='cyan' />
-           <Text className='text-cyan text-4xl'>Loading...</Text>
+            <Progress.CircleSnail thickness={10} size={140} color={'#001919'} />
+           <Text className='text-#001919 text-4xl'>Loading...</Text>
           </View>
         ): (
             <SafeAreaView className = "flex flex-1 pt-14 ">
@@ -142,7 +140,10 @@ function HomeScreen() {
             {current?.temp_c}&#176;
           </Text>
           <Text className='text-center text-black text-xl tracking-widest'>
-            {current?.condition?.text}
+            {current?.condition?.text}   
+          </Text>
+          <Text className='text-center text-red-600 text-sm tracking-widest'>
+          
           </Text>
         </View>
         {/*Other stats*/}
@@ -164,7 +165,7 @@ function HomeScreen() {
           </View>
           <View className='flex-row space-x-2 items-center'>
             <Image source={require('../assets/images/sunrise.png')}
-              className='h-6 w-6 ' />
+              className='h-6 w-6 '/>
             <Text className='text-black font-semibold text-base mr-1'>
               {weather?.forecast?.forecastday[0]?.astro?.sunrise}
             </Text>
@@ -175,7 +176,7 @@ function HomeScreen() {
              <View className='mb-2 space-y-3'>
         <View className='flex-row items-center mx-5 space-x-2 '>
           <CalendarDaysIcon size='22' color='black' />
-          <Text className='text-black text-base'>Daily Forecast</Text>
+          <Text className='text-black text-base font-semibold '>Daily Forecast</Text>
         </View>
         <ScrollView
           horizontal contentContainerStyle={{ paddingHorizontal: 10 }}
@@ -183,14 +184,14 @@ function HomeScreen() {
           {
             weather?.forecast?.forecastday?.map((item, index) => {
               let date = new Date(item.date);
-              let options = { weekday: 'long' };
+              let options = { weekday : 'long' };
               let dayName = date.toLocaleDateString('en-US', options);
               dayName = dayName.split(',')[0];
               return (
                 <View
                   key={index}
-                  className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3  bg-sky-300 mr-3'>
-                  <Image source={weatherImages[current?.condition?.text]}
+                  className='flex justify-center items-center w-24 rounded-3xl py-3 space-y-3  bg-sky-800 mr-3'>
+                  <Image source={weatherImages[item?.day?.condition?.text]}
                     //source={require('../assets/images/heavyrain.png')} 
                     className='h-12 w-12 rounded-3xl' />
                   <Text className='text-white'>{dayName}</Text>
