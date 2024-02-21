@@ -1,7 +1,7 @@
 import { Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Image } from "react-native";
-import { theme, themes } from '../theme';
+import { theme } from '../theme';
 import { CalendarDaysIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import { StatusBar } from 'expo-status-bar';
 import { MapPinIcon } from 'react-native-heroicons/solid'
@@ -40,7 +40,7 @@ function HomeScreen() {
         setLocations(data);
       })
     }
-  }
+  };
 
   useEffect(() => {
     fetchMyWeatherData();
@@ -56,8 +56,8 @@ function HomeScreen() {
     }).then(data => {
       setWeather(data);
       setLoading(false); // loading complete then fatch data
-    })
-  }
+    });
+  };
 
   const handleTextDebounce = useCallback(debounce(handleSearch, 1200), []);
 
@@ -185,7 +185,7 @@ function HomeScreen() {
               let date = new Date(item.date);
               let options = { weekday: 'long' };
               let dayName = date.toLocaleDateString('en-US', options);
-              dayName = dayName.split(',')[0]
+              dayName = dayName.split(',')[0];
               return (
                 <View
                   key={index}
